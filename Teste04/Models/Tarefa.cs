@@ -13,7 +13,7 @@ namespace Teste04.Models
         public string Nome { get; set; } = string.Empty;
 
         [Display(Name = "Descrição da Tarefa")]
-        [StringLength(255, ErrorMessage = "A descrição do produto não pode ter mais que 255 caracteres.")]
+        [StringLength(511, ErrorMessage = "A descrição do produto não pode ter mais que 511 caracteres.")]
         public string Desc { get; set; } = string.Empty;
 
         [Display(Name = "Data de Início")]

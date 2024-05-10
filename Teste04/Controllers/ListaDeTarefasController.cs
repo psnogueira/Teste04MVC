@@ -16,6 +16,8 @@ namespace Teste04.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Tarefas = _tarefas;
+
             return View(_tarefas);
         }
 
