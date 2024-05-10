@@ -9,9 +9,11 @@ namespace Teste04.Models
 
         [Required(ErrorMessage = "O Nome da Tarefa é obrigatório.")]
         [Display(Name = "Nome da Tarefa")]
+        [StringLength(100, ErrorMessage = "O nome da tarefa não pode ter mais que 100 caracteres.")]
         public string Nome { get; set; } = string.Empty;
 
         [Display(Name = "Descrição da Tarefa")]
+        [StringLength(255, ErrorMessage = "A descrição do produto não pode ter mais que 255 caracteres.")]
         public string Desc { get; set; } = string.Empty;
 
         [Display(Name = "Data de Início")]

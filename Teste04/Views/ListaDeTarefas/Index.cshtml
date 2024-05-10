@@ -7,7 +7,7 @@
 
 <section class="vh-100">
     <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="row d-flex justify-content-center align-items-start h-100">
             <div class="col">
                 <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
                     <div class="card-body py-4 px-4 px-md-5">
@@ -25,22 +25,22 @@
                             </p>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="">
 
                         <div>
                             <!-- Início Tarefas -->
                             @if (@Model != null)
                             {
-                                <div class="d-flex justify-content-end align-items-center mb-4 pb-3">
+                                <div class="d-flex justify-content-end align-items-center pb-3">
                                     <p class="small mb-0 me-2 text-muted">Filtrar</p>
-                                    <select data-mdb-select-init>
+                                    <select class="form-select">
                                         <option value="1">Todas</option>
                                         <option value="2">Completada</option>
                                         <option value="3">Ativa</option>
                                         <option value="4">Tem Data de Entrega</option>
                                     </select>
                                     <p class="small mb-0 ms-4 me-2 text-muted">Ordenar</p>
-                                    <select data-mdb-select-init>
+                                    <select class="form-select">
                                         <option value="1">Data de Criação</option>
                                         <option value="2">Data de Entrega</option>
                                     </select>
@@ -49,41 +49,87 @@
                                     </a>
                                 </div>
 
-                                @foreach (var tarefa in Model)
-                                {
-                                    <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
-                                        <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                                            <div class="form-check">
-                                                <form asp-action="ToggleStatus" method="post">
-                                                    <input type="hidden" name="id" value="@tarefa.TarefaID" />
-                                                    <button class="@(@tarefa.Status ? "btn-danger" : "btn-success")" type="submit">
-                                                        @if(@tarefa.Status)<i class="bi bi-square"></i>
-                                                        else <i class="bi bi-check2-square"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                                            <a asp-action="Details" class="lead fw-normal mb-0" asp-route-id="@tarefa.TarefaID">@tarefa.Nome</a>
-                                        </li>
-                                        <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                                            <div class="d-flex flex-row justify-content-end mb-1">
-                                                <a asp-action="Edit" class="text-info" title="Editar" asp-route-id="@tarefa.TarefaID">
-                                                    <i class="bi bi-pencil-fill h5 me-3"></i>
-                                                </a>
-                                                <a asp-action="Delete" class="text-danger" title="Deletar" asp-route-id="@tarefa.TarefaID">
-                                                    <i class="bi bi-trash-fill h5"></i>
-                                                </a>
-                                            </div>
-                                            <div class="text-end text-muted">
-                                                <a href="#!" class="text-muted" data-mdb-tooltip-init title="Data de Criação">
-                                                    <p class="small mb-0"><i class="bi bi-info-circle me-2"></i>@tarefa.DtInicio.ToString("d")</p>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <table class="table table-hover table-borderless align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th class="col-1"></th>
+                                            <th class="col-2">Nome</th>
+                                            <th class ="col-7">Descrição</th>
+                                            <th class="col-2">Situação</th>
+                                            <th class="col-3"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="">
+                                        @foreach (var tarefa in Model)
+                                        {
+                                            <tr>
+                                                <th>
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <form asp-action="ToggleStatus" method="post">
+                                                            <input type="hidden" name="id" value="@tarefa.TarefaID" />
+                                                            <button class="btn btn-sm @(@tarefa.Status ? "btn-success" : "btn-danger")" type="submit">
+                                                                @if (@tarefa.Status)
+                                                                {
+                                                                    <i class="bi bi-check2-square"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="bi bi-square"></i>
+                                                                }
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <a asp-action="Details" class="lead fs-6 text-decoration-none mb-0" asp-route-id="@tarefa.TarefaID">
+                                                        @if (@tarefa.Status)
+                                                        {
+                                                            <s>@tarefa.Nome</s>
+                                                        }
+                                                        else
+                                                        {
+                                                            @tarefa.Nome
+                                                        }
+                                                    </a>
+                                                </th>
+                                                <th>
+                                                    <a asp-action="Details" class="lead fs-6 text-decoration-none fw-normal mb-0" asp-route-id="@tarefa.TarefaID">
+                                                        @(@tarefa.Desc.Length > 50 ? @tarefa.Desc.Substring(0, 50) + "..." : @tarefa.Desc)
+                                                    </a>
+                                                </th>
+                                                <th>
+                                                    <div class=" px-3 me-2">
+                                                        @if (!@tarefa.Status)
+                                                        {
+                                                            <p class="small"><i class="bi bi-hourglass-split"></i> Por Fazer</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="small">Concluído em @tarefa.DtFim.ToString("d")</p>
+                                                        }
+                                                    </div>
+                                                </th>
+                                                <th>
+                                                    <div class="d-flex flex-row justify-content-end mb-1">
+                                                        <a asp-action="Edit" class="text-primary" title="Editar" asp-route-id="@tarefa.TarefaID">
+                                                            <i class="bi bi-pencil-fill h5 me-3"></i>
+                                                        </a>
+                                                        <a asp-action="Delete" class="text-danger" title="Deletar" asp-route-id="@tarefa.TarefaID">
+                                                            <i class="bi bi-trash-fill h5"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="text-end text-muted">
+                                                        <a href="#!" class="text-muted text-decoration-none" data-mdb-tooltip-init title="Data de Criação">
+                                                            <p class="small mb-0">Criada em @tarefa.DtInicio.ToString("d")</p>
+                                                        </a>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
 
-                                }
+                                
                             }
                             else
                             {
