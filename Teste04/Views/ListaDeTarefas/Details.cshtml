@@ -1,0 +1,109 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ListaDeTarefas
+
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                    <div class="card-body py-4 px-4 px-md-5">
+
+                        <!-- Início Título -->
+                        <p class="h1 text-center mt-3 pb-3 text-primary">
+                            <i class="bi bi-check2-square"></i>
+                            @Model.Nome
+                        </p>
+
+                        <p class="h5 text-center mb-4 ">
+                            @Model.Desc
+                        </p>
+                         <!-- Fim Título -->
+
+                        <div class="pb-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form asp-action="CreateTask" method="post">
+                                        <input type="hidden" asp-for="ListaDeTarefasID" />
+                                        <div class="d-flex flex-row align-items-center">
+                                            <input asp-for="Nome" class="form-control form-control-lg" placeholder="Adicionar Tarefa...">
+                                            <div>
+                                                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Adicionar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div>
+                            <!-- Início Tarefas -->
+                            @if (@Model.Tarefas != null)
+                            {
+                                <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
+                                    <p class="small mb-0 me-2 text-muted">Filtrar</p>
+                                    <select data-mdb-select-init>
+                                        <option value="1">Todas</option>
+                                        <option value="2">Completada</option>
+                                        <option value="3">Ativa</option>
+                                        <option value="4">Tem Data de Entrega</option>
+                                    </select>
+                                    <p class="small mb-0 ms-4 me-2 text-muted">Ordenar</p>
+                                    <select data-mdb-select-init>
+                                        <option value="1">Data de Criação</option>
+                                        <option value="2">Data de Entrega</option>
+                                    </select>
+                                    <a href="#!" style="color: #23af89;" data-mdb-tooltip-init title="Ascending">
+                                        <i class="fas fa-sort-amount-down-alt ms-2"></i>
+                                    </a>
+                                </div>
+                                
+                                @foreach (var tarefa in @Model.Tarefas)
+                                {
+                                    <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
+                                        <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                                            <div class="form-check">
+                                                <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1"
+                                                       aria-label="..." checked />
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                                            <p class="lead fw-normal mb-0">@tarefa.Nome</p>
+                                        </li>
+                                        <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                                            <div class="d-flex flex-row justify-content-end mb-1">
+                                                <a href="#!" class="text-info" data-mdb-tooltip-init title="Edit todo">
+                                                    <i class="bi bi-pencil-fill h5 me-3"></i>
+                                                </a>
+                                                <a href="#!" class="text-danger" data-mdb-tooltip-init title="Delete todo">
+                                                    <i class="bi bi-trash-fill h5"></i>
+                                                </a>
+                                            </div>
+                                            <div class="text-end text-muted">
+                                                <a href="#!" class="text-muted" data-mdb-tooltip-init title="Data de Criação">
+                                                    <p class="small mb-0"><i class="bi bi-info-circle me-2"></i>@tarefa.DtInicio.ToString("d")</p>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-center mt-5 mb-4">Ainda não há nenhuma tarefa registrada (: </p>
+                            }
+
+                            <!-- Fim Tarefas -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
