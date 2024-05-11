@@ -21,6 +21,11 @@ namespace Teste04.Controllers
             return View(_tarefas);
         }
 
+        public IActionResult Concluidas()
+        {
+            return View(_tarefas);
+        }
+
         // CRUD Lista de Tarefas
 
         [HttpGet]
@@ -96,7 +101,7 @@ namespace Teste04.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleStatus(int id)
+        public IActionResult ConcluirTarefa(int id)
         {
             var tarefa = _tarefas.FirstOrDefault(c => c.TarefaID == id);
 
@@ -107,13 +112,24 @@ namespace Teste04.Controllers
                     tarefa.Status = true;
                     tarefa.DtFim = DateTime.Today;
                 }
-                else
+            }
+            
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult CancelarTarefa(int id)
+        {
+            var tarefa = _tarefas.FirstOrDefault(c => c.TarefaID == id);
+
+            if (tarefa != null)
+            {
+                if (tarefa.Status)
                 {
                     tarefa.Status = false;
                 }
             }
-            
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Concluidas");
         }
 
     }

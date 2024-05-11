@@ -28,16 +28,16 @@
                         <hr class="">
 
                         <div>
-                            
+
                             <!-- Início Tarefas -->
                             @if (@Model != null)
                             {
                                 <div class="d-flex justify-content-start align-items-center pb-3">
-                                    <a asp-action="Index" class="btn btn-secondary btn-outline me-4 disabled" aria-disabled="true">Ver Por Fazer</a>
-                                    <a asp-action="Concluidas" class="btn btn-success">Ver Concluídas</a>
+                                    <a asp-action="Index" class="btn btn-secondary btn-outline me-4">Ver Por Fazer</a>
+                                    <a asp-action="Concluidas" class="btn btn-success disabled" aria-disabled="true">Ver Concluídas</a>
                                 </div>
 
-                                @if(@Model.Count > 0)
+                                @if (@Model.Count > 0)
                                 {
                                     <table class="table table-hover table-borderless align-middle">
                                         <thead class="table-dark">
@@ -52,11 +52,12 @@
                                         <tbody id="task-list" class="">
                                             @foreach (var tarefa in Model)
                                             {
-                                                @if(!tarefa.Status) {
+                                                @if (tarefa.Status)
+                                                {
                                                     <tr>
                                                         <th>
                                                             <div class="form-check d-flex align-items-center">
-                                                                <form asp-action="ConcluirTarefa" method="post">
+                                                                <form asp-action="CancelarTarefa" method="post">
                                                                     <input type="hidden" name="id" value="@tarefa.TarefaID" />
                                                                     <button class="btn btn-sm @(@tarefa.Status ? "btn-success" : "btn-danger")" type="submit">
                                                                         @if (@tarefa.Status)
@@ -121,9 +122,9 @@
                                         </tbody>
                                     </table>
 
-                                    @if (!Model.Any(tarefa => !tarefa.Status))
+                                    @if (!Model.Any(tarefa => tarefa.Status))
                                     {
-                                        <p class="text-center mt-5 mb-4">Todas as Tarefas foram Concluídas (: </p>
+                                        <p class="text-center mt-5 mb-4">Ainda não há nenhuma tarefa Concluída :( </p>
                                     }
                                 }
                                 else
